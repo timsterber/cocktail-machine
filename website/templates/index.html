@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cocktail Buttons</title>
+    <style>
+        /* Reset styles for consistent spacing */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Allgemeine Seitenstile */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* Überschrift */
+        h1 {
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            background-color: #007BFF;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
+
+        /* Scrollbare Liste */
+        .button-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #ffffff;
+        }
+
+        /* Buttons */
+        .cocktail-button {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            margin-bottom: 10px;
+            font-size: 18px;
+            text-align: center;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .cocktail-button:active {
+            transform: translateY(1px);
+        }
+
+        /* Green color for clicked button */
+        .button_pressed {
+            background-color: rgb(249, 196, 3);
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>Cocktail List</h1>
+    <div class="button-container">
+        {% for cocktail in cocktails %}
+        <form method="POST" action="#" onsubmit="return false;">
+            <button type="button" class="cocktail-button" id="btn-{{ loop.index }}" onclick="clickEvent('btn-{{ loop.index }}', '{{ cocktail }}')">{{ cocktail }}</button>
+        </form>
+        {% endfor %}
+    </div>
+
+    <script>
+        var buttonClicked = false;
+        // Function to change button color to green and trigger backend action
+        function clickEvent(buttonId, cocktail) {
+            if (buttonClicked) {
+                return;
+            }   
+            buttonClicked = true;
+            var button = document.getElementById(buttonId);
+            button.classList.add('button_pressed');  // Add the 'clicked' class to change color
+
+            // Trigger the backend route with a fetch request
+            fetch('/button/' + encodeURIComponent(cocktail), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ cocktail: cocktail })
+            })
+            .then(response => response.json())
+            .then(data => {
+                buttonClicked = false;
+                button.classList.remove('button_pressed');  // Add the 'clicked' class to change color
+                console.log(data.message);  // Log the server response
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            
+        }   
+    </script>
+</body>
+</html>
