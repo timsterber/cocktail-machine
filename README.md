@@ -23,6 +23,11 @@ not necessary, but for design ideas:
 - LED light pannel
 - LED lights
 
+Here is the electronic plan:
+
+![Electronic](images/electronic.png)
+\# Picture by: https://github.com/alex9849/CocktailPi
+
 ## 3. Saving all information
 There are multiple solutions for saving data with a database. On this project we are using SQLite as our database, but you are totally free to use another one which suits your needs better. Then you just need to adapt the code to your requests.
 
@@ -45,45 +50,10 @@ Recipes Table:
 2. Buying the stuff
 3. Building the machine
 
-## 4. Programming
-After some research, it was possible to build a website in python with flask.
-Now there are several actions we need to identify.
+## 4. Inputs
+We have 12 possible Inputs, so you can put your own cocktails in the database and it will automatically use them for the website.
 
-## 5. Inputs
-We have 12 possible Inputs.
-
-- Cuba Libre
-    + Cola, Rum
-- Mojito
-    + Soda, Rum, Limettensaft
-- Vodka Lemon
-    + Soda, Vodka, Zitronensaft
-- Long Island Iced Tea
-    + Vodka, Rum, Tequila, Gin, Triple Sec, Zitronensaft, Cola
-- Tequila Sunrise
-    + Tequila, Orangensaft
-- 
-
-
-1. Vodka
-2. Rum
-3. Gin
-4. Tequila
-5. Triple Sec
-6. Korn
-7. Cola
-8. Fanta
-9. Sprite
-10. Cranberrysaft
-11. Zitronensaft
-12. Orangensaft
-
-- Cola Vodka
-- Cola Rum
-- Sprite Vodka
-- ...
-
-## 6. Database Commands
+## 5. Database Commands
 
 ```sql
 DROP TABLE table_name;      -- Delete Table
@@ -94,3 +64,12 @@ SELECT * FROM table_name;   -- Show whole Table
 .schema                     -- Verify Schema
 .tables                     -- List Tables
 ```
+
+## 6. Programming the Valves
+After building the website, we need to create functions to control the liquids (Inputs).
+We need to create a function to adjust the timing for the right amount of liquid for the glass.
+
+## 7. Other TODOs
+- DNS Server for website (e.g.: http://cocktail.app/...)
+- WiFI Hostspot on Raspberry for connection
+
