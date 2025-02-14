@@ -49,6 +49,19 @@
             cursor: pointer;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
+        .stop-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            font-size: 14px;
+            background-color: #f4f4f4;
+            color: #007BFF;
+            border: 2px solid #007BFF;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
 
         input {
             padding: 10px;
@@ -87,6 +100,7 @@
         Settings
         <!-- Settings Button -->
         <a href="/" class="back-button">Back</a>
+        <a class="stop-button" onclick="stop_website()">Stop</a>
     </h1>
     <div class="container">
         <button type="submit" id="button_measuring" onclick="measuring('button_measuring')">Start process</button>
@@ -145,8 +159,25 @@
             .then(response => response.json())
             .then(data => {
                 blocked = false;
-                console.log(data.amount);  // Log the server response
+                document.getElementById('text_output').innerHTML = "New TPM: " + data.tpm + "s";
+
+                console.log(data.tpm);  // Log the server response
             })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+        }
+
+        function stop_website() {
+            fetch('/settings/stop_website', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
             .catch(error => {
                 console.error('Error:', error);
             });

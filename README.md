@@ -28,6 +28,25 @@ Here is the electronic plan:
 ![Electronic](images/electronic.png)
 \# Picture by: https://github.com/alex9849/CocktailPi
 
+Also the pin assignment uis using the following pins:
+
+![Electronic](images/raspberrypi_pins.jpg)
+
+| Inputs | GPIO Pin |
+|--------|----------|
+| 1      |  2       |
+| 2      |  3       |
+| 3      |  4       |
+| 4      | 17       |
+| 5      | 27       |
+| 6      | 22       |
+| 7      | 10       |
+| 8      |  9       |
+| 9      | 11       |
+| 10     |  5       |
+| 11     |  6       |
+| 12     | 13       |
+
 ## 3. Saving all information
 There are multiple solutions for saving data with a database. On this project we are using SQLite as our database, but you are totally free to use another one which suits your needs better. Then you just need to adapt the code to your requests.
 
