@@ -93,6 +93,25 @@
             background-color: #00ff48;
             color: #ffffff;
         }
+
+        .number-buttons-container {
+            display: flex;
+            gap: 10px;
+        }
+        .number-button {
+            padding: 10px 15px;
+            font-size: 16px;
+            border: 1px solid #007BFF;
+            border-radius: 4px;
+            background-color: #f4f4f4;
+            color: #007BFF;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .number-button.pressed {
+            background-color: #007BFF;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -103,15 +122,23 @@
         <a class="stop-button" onclick="stop_website()">Stop</a>
     </h1>
     <div class="container">
+        <!-- Number Buttons -->
+        <div class="number-buttons-container">
+            <button class="number-button" id="button-1" onclick="toggleNumberButton('button-1')">1</button>
+            <button class="number-button" id="button-2" onclick="toggleNumberButton('button-2')">2</button>
+            <button class="number-button" id="button-3" onclick="toggleNumberButton('button-3')">3</button>
+            <button class="number-button" id="button-4" onclick="toggleNumberButton('button-4')">4</button>
+        </div>
+
         <button type="submit" id="button_measuring" onclick="measuring('button_measuring')">Start process</button>
         <input type="number" id="integer-input" placeholder="Enter the amount of liquid in ml" required>
-        <button type="submit"onclick="calculate('integer-input')">Calculate timing</button>
+        <button type="submit" onclick="calculate('integer-input')">Calculate timing</button>
         <br>
         <label id="text_output"></label>
     </div>
 
     <script>
-        blocked = false;
+        let blocked = false;
 
         function measuring(buttonID) {
             if(blocked) {
@@ -140,7 +167,7 @@
             });
 
         }
-        
+
         function calculate(inputID) {
             if(blocked) {
                 return;
@@ -182,6 +209,31 @@
                 console.error('Error:', error);
             });
 
+        }
+
+        function toggleNumberButton(buttonID) {
+            const button = document.getElementById(buttonID);
+            toggleFlow(button.innerText);
+            button.classList.toggle('pressed');
+        }
+
+        let flowStates = {};
+        function toggleFlow(input) {
+            const currentState = flowStates[input] || false;
+            const newState = currentState === false ? true : false;
+            flowStates[input] = newState;
+            console.log('newState:', newState);
+
+            fetch('/settings/flow', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ input: input, value: newState })
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         }
 
     </script>

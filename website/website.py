@@ -1,8 +1,7 @@
 from quart import Quart, render_template, jsonify, request
 import sqlite3
 import os
-import time
-from test import Control
+from control import Control
 import asyncio
 
 app = Quart(__name__, template_folder="templates")
@@ -78,6 +77,16 @@ async def calc_measuring_action(amount):
     tpm = control.calc_tpm(int(amount))
     print(f"New time per milliliter: {tpm}")
     return jsonify({"tpm" : tpm})
+
+@app.route('/settings/flow', methods=['POST'])
+async def flow_action():
+    data = await request.get_json()
+    input = data.get('input')
+    state = data.get('value')
+    assert(input != None and state != None)
+    control._start(input) if state else control._stop(input)
+    return jsonify({"input": input, "state": state})
+
 
 @app.route('/settings', methods=['GET', 'POST'])
 async def settings():
