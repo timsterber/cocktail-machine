@@ -84,7 +84,7 @@ async def flow_action():
     input = data.get('input')
     state = data.get('value')
     assert(input != None and state != None)
-    control._start(input) if state else control._stop(input)
+    await control._start(input) if state else await control._stop(input)
     return jsonify({"input": input, "state": state})
 
 
