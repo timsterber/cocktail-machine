@@ -14,7 +14,7 @@ Enable SSH with password authentication
 sudo apt update && apt upgrade  // Update RPI
 sudo apt install sqlite3        // Install SQLite
 sudo apt install pip            // Install pip for python
-sudo apt install python3-flask  // Install Flask for Webite
+sudo apt install quart          // Install Quart for Webite with Async
 ```
 
 ## 3. Download Project
