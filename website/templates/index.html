@@ -3,63 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cocktail Buttons</title>
+    <title>Cocktail List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
-        /* Reset styles for consistent spacing */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* Allgemeine Seitenstile */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
-
-        /* Überschrift */
-        h1 {
-            text-align: center;
-            padding: 20px;
-            margin: 0;
-            background-color: #007BFF;
-            color: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            flex-shrink: 0;
-            position: relative;
-        }
-
-        /* Small button for settings */
-        .settings-button {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 5px 10px;
-            font-size: 14px;
-            background-color: #f4f4f4;
-            color: #007BFF;
-            border: 2px solid #007BFF;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .settings-button:hover {
-            background-color: #00ff48;
-            color: #ffffff;
-        }
-
         /* Scrollbare Liste */
         .button-container {
             flex-grow: 1;
             overflow-y: auto;
             padding: 10px;
             background-color: #ffffff;
-            
         }
 
         /* Buttons */
@@ -93,7 +45,8 @@
     <h1>
         Cocktail List
         <!-- Settings Button -->
-        <a href="/settings" class="settings-button">Settings</a>
+        <a href="/settings" class="title-left-button">Settings</a>
+        <a href="/database" class="title-right-button">Database</a>
     </h1>
     <div class="button-container">
         {% for cocktail in cocktails %}
@@ -115,12 +68,12 @@
             button.classList.add('button_pressed');  // Add the 'clicked' class to change color
 
             // Trigger the backend route with a fetch request
-            fetch('/button/' + encodeURIComponent(cocktail), {
+            fetch('/cocktail/' + encodeURIComponent(cocktail), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ cocktail: cocktail })
+                body: JSON.stringify({})
             })
             .then(response => response.json())
             .then(data => {

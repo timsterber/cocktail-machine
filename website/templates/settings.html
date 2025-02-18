@@ -4,24 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
-        h1 {
-            text-align: center;
-            padding: 20px;
-            margin: 0;
-            background-color: #007BFF;
-            color: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            flex-shrink: 0;
-            position: relative;
-        }
         .container {
             display: flex;
             flex-direction: column;
@@ -34,33 +18,6 @@
             margin: 20px auto;
             gap: 20px; 
             width: 80%;
-        }
-
-        .back-button {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 5px 10px;
-            font-size: 14px;
-            background-color: #f4f4f4;
-            color: #007BFF;
-            border: 2px solid #007BFF;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        .stop-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 5px 10px;
-            font-size: 14px;
-            background-color: #f4f4f4;
-            color: #007BFF;
-            border: 2px solid #007BFF;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         input {
@@ -89,10 +46,6 @@
         .button_pressed {
             background-color: rgb(249, 196, 3);
         }
-        .settings-button:hover {
-            background-color: #00ff48;
-            color: #ffffff;
-        }
 
         .number-buttons-container {
             display: flex;
@@ -109,7 +62,7 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
         .number-button.pressed {
-            background-color: #007BFF;
+            background-color: #26ff00;
             color: white;
         }
     </style>
@@ -118,8 +71,8 @@
     <h1>
         Settings
         <!-- Settings Button -->
-        <a href="/" class="back-button">Back</a>
-        <a class="stop-button" onclick="stop_website()">Stop</a>
+        <a href="/" class="title-left-button">Back</a>
+        <a class="title-right-button" onclick="stop_website()">Stop</a>
     </h1>
     <div class="container">
         <!-- Number Buttons -->
@@ -181,7 +134,7 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({amount: amount})
+                body: JSON.stringify({})
             })
             .then(response => response.json())
             .then(data => {

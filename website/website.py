@@ -1,47 +1,32 @@
 from quart import Quart, render_template, jsonify, request
-import sqlite3
-import os
-from control import Control
 import asyncio
+import os
+
+# Own functions
+from control_rpi_test import Control_RPI
+from control_db import *
+
 
 app = Quart(__name__, template_folder="templates")
 
 # Path to the database
-DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "database", "cocktails.db")
 
-control = Control()
 
-def get_cocktails():
-    """Fetch all cocktail names from the database."""
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    cursor.execute("SELECT name FROM Cocktails")  # Fetch only the names
-    rows = cursor.fetchall()
-    conn.close()
-    return [row[0] for row in rows]  # Extract names into a list
-
-def cocktail_values_by_name(name):
-    """Fetch a cocktail by its name."""
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    cursor.execute(f"SELECT * FROM Cocktails WHERE name='{name}'")
-    row = cursor.fetchone()
-    conn.close()
-    return row[2:]      # Return only the values
+control = Control_RPI()
+db = Control_DB()
 
 @app.route('/')
 async def index():
     # Fetch cocktail names
-    cocktails = get_cocktails()
+    cocktails = db.get_cocktails_names()
     return await render_template('index.html', cocktails=cocktails)
 
-# Logic for 
-@app.route('/button/<cocktail>', methods=['POST'])
+@app.route('/cocktail/<cocktail>', methods=['POST'])
 async def button_action(cocktail):
     # Here you can handle any action, e.g., logging or database update
     print(f"Create cocktail: {cocktail}")  # Log to server or handle further actions
     
-    data = cocktail_values_by_name(cocktail)
+    data = db.cocktail_values_by_name(cocktail)
     control.check_values(data)
     
     tasks = []
@@ -84,7 +69,7 @@ async def flow_action():
     input = data.get('input')
     state = data.get('value')
     assert(input != None and state != None)
-    await control._start(input) if state else await control._stop(input)
+    await control._start(control.pins[int(input) - 1]) if state else await control._stop(control.pins[int(input) - 1])
     return jsonify({"input": input, "state": state})
 
 
@@ -92,5 +77,30 @@ async def flow_action():
 async def settings():
     return await render_template('settings.html')
 
+@app.route("/database")
+async def database():
+    cocktails = db.get_cocktails()
+    return await render_template("database.html", cocktails=cocktails)
+
+@app.route("/database/save", methods=["POST"])
+async def save_database():
+    data = await request.get_json()
+    
+    # Check if there are empty values and fill them with 0
+    for index, cocktail in enumerate(data):
+        if data[index][0] == '':
+            return {"message": "Missing Attribut 'name'."}, 400
+        data[index] = [0 if i == '' else i for i in cocktail]
+
+    # Clear the table and add the new data
+    db.clear_table()
+    for cocktail in data:
+        db.add_cocktail(cocktail)
+    return {"message": "Saved successfully!"}, 200
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80, use_reloader=False)
+    try:
+        app.run(host="0.0.0.0", port=80, debug=True)
+    except KeyboardInterrupt:
+        control.reset_pins()
+        db.close()
