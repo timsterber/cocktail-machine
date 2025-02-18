@@ -4,7 +4,7 @@
   
 - hostname:   cocktail-machine.local  
 - username:   toor  
-- password:   otzberg  
+- password:   ******  
 
 Enable SSH with password authentication
 
