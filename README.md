@@ -1,6 +1,5 @@
 # The Cocktail Machine
  
-![settings](images/website_settings.png)
 ## Inspiration & Plan
 The inspiration for this project came from a spontaneous and amusing idea my friend and I had:  
 We want to build a cocktail machine that features multiple bottle inputs and a single output. The goal is to make it as affordable as possible. Instead of using expensive pumps to dispense liquids into the glass, we plan to use valves instead.  
@@ -29,6 +28,7 @@ In the /settings tab, there you are able to set up the TPM (time per milliliter)
 1. Start the process (Button)
 2. Measure the amount of liquid which came out of the output and type it in
 3. Calculate the TPM
+![settings](images/website_settings.png)
 
 ## 2. Components
 The next step is deciding which computer to use for controlling the peristalic morots, ensuring precise amounts of liquid are dispensed into the glas.
